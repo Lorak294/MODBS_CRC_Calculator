@@ -1,43 +1,23 @@
 ﻿
+using System;
+using System.Windows.Forms;
+
 namespace MODBS_CRC_Calculator
 {
     public class CRCCalculator
     {
-        // Simple method - shows algorithm concept
         public static ushort Calculate(byte[] data)
         {
-            ushort crc = 0xFFFF;
-            for (uint i = 0; i < data.Length; i++)
+            ushort hiByte = 0xFF;
+            ushort loByte = 0xFF;
+            ushort index;
+            for (int i = 0; i < data.Length; i++)
             {
-                crc ^= data[i];
-
-                for (byte bit = 0; bit < 8; bit++)
-                {
-                    if ((crc & 0x0001) > 0)
-                    {
-                        crc >>= 1;
-                        crc ^= 0xA001;
-                    }
-                    else
-                    {
-                        crc >>= 1;
-                    }
-                }
+                index = (ushort)(hiByte ^ data[i]);
+                hiByte = (ushort)(loByte ^ LookupTables.aCRCHi[index]);
+                loByte = LookupTables.aCRCLo[index];
             }
-            return crc;
-        }
-
-        // Optimal method - uses hardcoded matching table
-        public static ushort CalculateUsingTable(byte[] data)
-        {
-            ushort crc = 0xFFFF;
-            for(int i = 0; i < data.Length;i++)
-            {
-                byte xor = (byte)(data[i] ^ crc);
-                crc >>= 8;
-                crc ^= LookupTables.CRCTable[xor];
-            }
-            return crc;
+            return (ushort)(hiByte << 8 | loByte);
         }
 
         public static byte[] HexStrToByteArray(string hexInput)

@@ -14,8 +14,8 @@ namespace MODBS_CRC_Calculator
             int iterCount = (int)iterationCountInput.Value;
             byte[] bytes = CRCCalculator.HexStrToByteArray(bytesInput.Text);
 
-            var watch = System.Diagnostics.Stopwatch.StartNew();
-            ushort crc = CRCCalculator.CalculateUsingTable(bytes);
+            var watch = Stopwatch.StartNew();
+            ushort crc = CRCCalculator.Calculate(bytes);
             watch.Stop();
             decimal elapsedMs = watch.ElapsedTicks / (decimal)Stopwatch.Frequency * 1000;
 

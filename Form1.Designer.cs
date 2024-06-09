@@ -47,6 +47,7 @@
             // bytesInput
             // 
             bytesInput.Location = new Point(16, 35);
+            bytesInput.MaxLength = 512;
             bytesInput.Name = "bytesInput";
             bytesInput.Size = new Size(430, 23);
             bytesInput.TabIndex = 0;
